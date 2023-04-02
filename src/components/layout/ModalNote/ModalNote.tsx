@@ -8,7 +8,7 @@ export const ModalAddNote: React.FC = () => {
   const [text, setText] = useState('')
 
   const { addNote } = useNotes()
-  const { isActive } = useModalNote()
+  const { isActive, toggleModal } = useModalNote()
 
   const dispatch = useAppDispatch()
 
@@ -17,7 +17,7 @@ export const ModalAddNote: React.FC = () => {
   ) => {
     setTitle(event.target.value)
   }
-  const handleTextChange: React.ChangeEventHandler<HTMLInputElement> = (
+  const handleTextChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
     event
   ) => {
     setText(event.target.value)
@@ -25,13 +25,14 @@ export const ModalAddNote: React.FC = () => {
 
   const handleAddNote: React.MouseEventHandler<HTMLButtonElement> = () => {
     dispatch(addNote({ title: title, text: text }))
+    dispatch(toggleModal(false))
   }
   return (
     <>
       {isActive && (
         <div className='modal-note'>
           <input value={title} onChange={handleTitleChange} type='text' />
-          <input value={text} onChange={handleTextChange} type='text' />
+          <textarea value={text} onChange={handleTextChange} />
           <button onClick={handleAddNote}>Add Note</button>
         </div>
       )}
