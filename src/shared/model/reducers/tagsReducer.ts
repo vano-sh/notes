@@ -13,14 +13,11 @@ const tagsSlice = createSlice({
   name: 'tags',
   initialState,
   reducers: {
-    addTag: (state, { payload }) => {
-      state.tags.push({
-        tag: payload.tag,
-        idNote: payload.idNote,
-      })
+    addTag: (state, { payload }: PayloadAction<ITag>) => {
+      state.tags.push({ id: payload.id, tag: payload.tag })
     },
-    removeTag: (state, { payload }: PayloadAction<ITag>) => {
-      state.tags = state.tags.filter((tag) => tag !== payload)
+    removeTag: (state, { payload }: PayloadAction<string>) => {
+      state.tags = state.tags.filter((tag) => tag.id !== payload)
     },
   },
 })

@@ -1,8 +1,23 @@
 import { useAppSelector } from './hook'
-import { addNote, changeNote, removeNote } from '../reducers/notesReducer'
+import {
+  addNote,
+  changeNote,
+  removeNote,
+  showNote,
+  findNote,
+  fetchNotes,
+} from '../reducers/notesReducer'
 
 export const useNotes = () => {
   const { notes } = useAppSelector((state) => state.noteReducer)
 
-  return { notes, addNote, changeNote, removeNote }
+  return {
+    notes,
+    addNote,
+    changeNote,
+    removeNote,
+    showNote,
+    findNote,
+    fetchNotes,
+  }
 }

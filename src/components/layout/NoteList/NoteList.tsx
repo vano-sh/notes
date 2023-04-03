@@ -1,8 +1,14 @@
+import { useEffect } from 'react'
 import { Note } from '../../common'
-import { useNotes } from 'shared/model/hooks'
+import { useAppDispatch, useNotes } from 'shared/model/hooks'
 
 export const NoteList: React.FC = () => {
-  const { notes } = useNotes()
+  const { notes, addNote, fetchNotes } = useNotes()
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    fetchNotes()
+  }, [])
 
   return (
     <>

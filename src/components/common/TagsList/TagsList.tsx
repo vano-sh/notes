@@ -7,7 +7,7 @@ export const TagsList: React.FC = () => {
   return (
     <div className='tags'>
       <h2>Tags</h2>
-      {tags && tags.map((tag) => <Tag {...tag} key={tag.tag} />)}
+      {tags && tags.map((tag) => <Tag {...tag} key={tag.id} />)}
     </div>
   )
 }

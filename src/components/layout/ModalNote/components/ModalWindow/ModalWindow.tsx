@@ -10,7 +10,7 @@ import { findTags } from 'shared/utils/lib'
 export const ModalWindow: React.FC = () => {
   const { notes, addNote, changeNote } = useNotes()
   const { idNote, mode, toggleModal } = useModalNote()
-  const { tags, addTag, removeTag } = useTags()
+  const { addTag } = useTags()
 
   const note = notes.find((note) => note.id === idNote)
 
@@ -30,12 +30,12 @@ export const ModalWindow: React.FC = () => {
     setText(event.target.value)
   }
   const handleAddNote = () => {
-    dispatch(addNote({ id: new Date().toISOString(), title, text }))
-    dispatch(toggleModal({ isActive: false, idNote: '', mode: '' }))
-
     const tags = findTags(text)
 
-    tags.map((tag) => dispatch(addTag({ tag, idNote })))
+    tags.forEach((tag) => dispatch(addTag({ id: tag, tag })))
+
+    dispatch(addNote({ id: new Date().toISOString(), title, text, tags }))
+    dispatch(toggleModal({ isActive: false, idNote: '', mode: '' }))
   }
   const handleCloseClick = () => {
     dispatch(toggleModal({ isActive: false, idNote: '', mode: '' }))
