@@ -1,9 +1,16 @@
 import { useState } from 'react'
-import { useAppDispatch, useNotes, useModalNote } from 'shared/model/hooks'
+import {
+  useAppDispatch,
+  useNotes,
+  useModalNote,
+  useTags,
+} from 'shared/model/hooks'
+import { findTags } from 'shared/utils/lib'
 
 export const ModalWindow: React.FC = () => {
   const { notes, addNote, changeNote } = useNotes()
   const { idNote, mode, toggleModal } = useModalNote()
+  const { tags, addTag, removeTag } = useTags()
 
   const note = notes.find((note) => note.id === idNote)
 
@@ -25,6 +32,10 @@ export const ModalWindow: React.FC = () => {
   const handleAddNote = () => {
     dispatch(addNote({ id: new Date().toISOString(), title, text }))
     dispatch(toggleModal({ isActive: false, idNote: '', mode: '' }))
+
+    const tags = findTags(text)
+
+    tags.map((tag) => dispatch(addTag({ tag, idNote })))
   }
   const handleCloseClick = () => {
     dispatch(toggleModal({ isActive: false, idNote: '', mode: '' }))

@@ -1,9 +1,14 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
-import { noteReducer, modalNoteReducer } from 'shared/model/reducers'
+import {
+  noteReducer,
+  modalNoteReducer,
+  tagsReducer,
+} from 'shared/model/reducers'
 
 const rootReducers = combineReducers({
   noteReducer,
   modalNoteReducer,
+  tagsReducer,
 })
 
 const store = configureStore({

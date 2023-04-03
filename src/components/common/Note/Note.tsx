@@ -1,5 +1,6 @@
 import { useAppDispatch, useNotes, useModalNote } from 'shared/model/hooks'
 import { INote } from 'shared/model/types/INote'
+import { TagsList } from '../TagsList/TagsList'
 
 export const Note: React.FC<INote> = ({ id, title, text }) => {
   const { removeNote } = useNotes()
@@ -27,7 +28,9 @@ export const Note: React.FC<INote> = ({ id, title, text }) => {
         <h2>{title}</h2>
         <p>{text}</p>
       </div>
-      <div className='note__footer'>tags</div>
+      <div className='note__footer'>
+        <TagsList />
+      </div>
     </div>
   )
 }
