@@ -1,4 +1,4 @@
-import { Header, ModalAddNote, NoteList, TagsList } from 'components'
+import { Header, ModalNote, NoteList, TagsList } from 'components'
 
 export const App: React.FC = () => {
   return (
@@ -7,7 +7,7 @@ export const App: React.FC = () => {
       <main className='main'>
         <NoteList />
         <TagsList />
-        <ModalAddNote />
+        <ModalNote />
       </main>
     </div>
   )

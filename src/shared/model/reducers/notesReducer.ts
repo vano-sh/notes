@@ -13,20 +13,21 @@ const notesSlice = createSlice({
   name: 'notes',
   initialState,
   reducers: {
-    addNote(
-      state,
-      { payload }: PayloadAction<{ title: string; text: string }>
-    ) {
+    addNote(state, { payload }: PayloadAction<INote>) {
       state.notes.push({
-        id: new Date().toISOString(),
+        id: payload.id,
         title: payload.title,
         text: payload.text,
       })
     },
-    changeNote(
-      state,
-      { payload }: PayloadAction<{ id: string; title: string; text: string }>
-    ) {
+    changeNote(state, { payload }: PayloadAction<INote>) {
+      const note = state.notes.find((note) => note.id === payload.id)
+      if (note) {
+        note.title = payload.title
+        note.text = payload.text
+      }
+    },
+    showNote(state, { payload }: PayloadAction<INote>) {
       const note = state.notes.find((note) => note.id === payload.id)
       if (note) {
         note.title = payload.title

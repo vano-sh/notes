@@ -1,41 +1,17 @@
-import { useState } from 'react'
-import { useAppDispatch } from 'shared/model/hooks/hook'
-import { useModalNote } from 'shared/model/hooks/useModalNote'
-import { useNotes } from 'shared/model/hooks/useNotes'
+import { useModalNote } from 'shared/model/hooks'
+import { ModalBtn, ModalWindow } from './components'
 
-export const ModalAddNote: React.FC = () => {
-  const [title, setTitle] = useState('')
-  const [text, setText] = useState('')
+export const ModalNote: React.FC = () => {
+  const { isActive } = useModalNote()
 
-  const { addNote } = useNotes()
-  const { isActive, toggleModal } = useModalNote()
-
-  const dispatch = useAppDispatch()
-
-  const handleTitleChange: React.ChangeEventHandler<HTMLInputElement> = (
-    event
-  ) => {
-    setTitle(event.target.value)
-  }
-  const handleTextChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
-    event
-  ) => {
-    setText(event.target.value)
-  }
-
-  const handleAddNote: React.MouseEventHandler<HTMLButtonElement> = () => {
-    dispatch(addNote({ title: title, text: text }))
-    dispatch(toggleModal(false))
-  }
   return (
-    <>
+    <div className='modal-note'>
+      <ModalBtn />
       {isActive && (
-        <div className='modal-note'>
-          <input value={title} onChange={handleTitleChange} type='text' />
-          <textarea value={text} onChange={handleTextChange} />
-          <button onClick={handleAddNote}>Add Note</button>
+        <div className='modal-note__window'>
+          <ModalWindow />
         </div>
       )}
-    </>
+    </div>
   )
 }

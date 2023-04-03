@@ -2,8 +2,24 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  width: 100%;
-  min-height: 50px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  width: 300px;
+  height: 200px;
+  max-width: 400px;
+  max-height: 300px;
   border: 2px solid #2a728a;
   border-radius: 10px;
+
+  &__body {
+    cursor: pointer;
+  }
+
+  &__footer {
+  }
 }
