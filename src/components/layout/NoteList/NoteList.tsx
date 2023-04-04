@@ -16,22 +16,21 @@ export const NoteList: React.FC = () => {
           notes &&
           notes.map((note) => <Note {...note} key={note.id} />)}
 
+        {mode.id === 'search' && (
+          <div className='notes__find'>
+            <h2 className='notes__find-title'>
+              Found by tag:
+              <span className='notes__find-tag'>{mode.tagFind}</span>
+            </h2>
+            <button className='notes__find-reset' onClick={handleFindOffClick}>
+              Reset
+            </button>
+          </div>
+        )}
         {mode.id === 'search' &&
           outputFound &&
           outputFound.map((note) => (
             <>
-              <div className='notes__find'>
-                <h2 className='notes__find-title'>
-                  Found by tag:
-                  <span className='notes__find-tag'>{mode.tagFind}</span>
-                </h2>
-                <button
-                  className='notes__find-reset'
-                  onClick={handleFindOffClick}
-                >
-                  Reset
-                </button>
-              </div>
               <Note {...note} key={note.id} />
             </>
           ))}

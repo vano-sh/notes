@@ -21,12 +21,7 @@ const notesSlice = createSlice({
   initialState,
   reducers: {
     addNote(state, { payload }: PayloadAction<INote>) {
-      state.notes.push({
-        id: payload.id,
-        title: payload.title,
-        text: payload.text,
-        tags: payload.tags,
-      })
+      state.notes.push(payload)
 
       localStorage.setItem('notes', JSON.stringify(state.notes))
     },
@@ -35,7 +30,9 @@ const notesSlice = createSlice({
       if (note) {
         note.title = payload.title
         note.text = payload.text
-        note.tags = payload.tags
+        payload.tags.forEach((tag) => {
+          if (!note.tags.includes(tag)) note.tags.push(tag)
+        })
       }
 
       localStorage.setItem('notes', JSON.stringify(state.notes))
