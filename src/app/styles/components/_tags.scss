@@ -3,4 +3,27 @@
   padding: 20px;
   color: #fff;
   background: #2a728a;
+
+  &__title {
+    font-weight: 700;
+    font-size: 24px;
+  }
+
+  &__tag {
+    margin-top: 10px;
+  }
+
+  &__text {
+    font-style: italic;
+  }
+
+  &__btn-del {
+    margin-left: 20px;
+    width: 20px;
+    height: 20px;
+    background: $bg-color-main;
+    color: $bg-color;
+    border-radius: 50%;
+    font-weight: 700;
+  }
 }

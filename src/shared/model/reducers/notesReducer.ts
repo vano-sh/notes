@@ -1,16 +1,19 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { INote } from '../types/INote'
+import { INote } from 'shared/model/types/INote'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
-const fetchNotes = createAsyncThunk('notes/fetchNotes', () => {
-  const notes = Promise.resolve().then(() => localStorage.getItem('notes'))
-  console.log(notes)
-  return notes
-})
+type INotes = {
+  mode: { id: 'all' | 'search'; tagFind: string }
+  notes: INote[]
+  outputFound: INote[]
+}
 
-type INotes = { notes: INote[] }
+const localStore = localStorage.getItem('notes')
+const notesLocal = localStore ? JSON.parse(localStore) : []
 
 const initialState: INotes = {
-  notes: [],
+  mode: { id: 'all', tagFind: '' },
+  notes: notesLocal,
+  outputFound: [],
 }
 
 const notesSlice = createSlice({
@@ -25,17 +28,17 @@ const notesSlice = createSlice({
         tags: payload.tags,
       })
 
-      localStorage.setItem(
-        'notes',
-        JSON.stringify(state.notes.map((note) => note))
-      )
+      localStorage.setItem('notes', JSON.stringify(state.notes))
     },
     changeNote(state, { payload }: PayloadAction<INote>) {
       const note = state.notes.find((note) => note.id === payload.id)
       if (note) {
         note.title = payload.title
         note.text = payload.text
+        note.tags = payload.tags
       }
+
+      localStorage.setItem('notes', JSON.stringify(state.notes))
     },
     showNote(state, { payload }: PayloadAction<INote>) {
       const note = state.notes.find((note) => note.id === payload.id)
@@ -46,23 +49,29 @@ const notesSlice = createSlice({
     },
     removeNote(state, { payload }: PayloadAction<string>) {
       state.notes = state.notes.filter((note) => note.id !== payload)
+      localStorage.setItem('notes', JSON.stringify(state.notes))
     },
-    findNote(state, { payload }: PayloadAction<string>) {
-      state.notes = state.notes.filter((note) =>
-        note.tags?.filter((tag) => tag === payload)
+    findNoteOn(state, { payload }: PayloadAction<string>) {
+      state.mode.id = 'search'
+      state.mode.tagFind = payload
+      state.outputFound = state.notes.filter((note) =>
+        note.tags?.includes(payload)
       )
     },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(fetchNotes.fulfilled, (state, { payload }) => {
-      console.log(payload)
-    })
+    findNoteOff(state) {
+      state.mode.id = 'all'
+      state.outputFound = []
+    },
   },
 })
 
-export const { addNote, changeNote, removeNote, showNote, findNote } =
-  notesSlice.actions
-
-export { fetchNotes }
+export const {
+  addNote,
+  changeNote,
+  removeNote,
+  showNote,
+  findNoteOn,
+  findNoteOff,
+} = notesSlice.actions
 
 export const { reducer: noteReducer } = notesSlice

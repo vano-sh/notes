@@ -1,36 +1,28 @@
 export const findTags = (text: string) => {
-  const words = text.split(' ')
-
-  const tags = words.filter((word) => word.startsWith('#'))
-
-  return tags
+  return text.split(' ').filter((word) => word.startsWith('#'))
 }
 
-// export const textContent = (text: string) => {
-//   const words = text.split(' ')
-//   const processedWords = words.map((word) => {
-//     const isHashTag = word.startsWith('#')
-//     if (!isHashTag) {
-//       return word
-//     }
+export const highlightingTags = (text: string | null) => {
+  if (!text) return ''
 
-//     const hasWordPunctuationMarks =
-//       word.includes('?') ||
-//       word.includes('!') ||
-//       word.includes('.') ||
-//       word.includes(',')
+  const tags = findTags(text)
 
-//     if (!hasWordPunctuationMarks) {
-//       return `<span class="tag">${word}</span>`
-//     }
+  const newText = text
+    .split(' ')
+    .map((word) => {
+      if (tags.includes(word)) {
+        word = `<span>${word}</span>`
+      }
+      return word
+    })
+    .join(' ')
 
-//     const punctuationMarkIndex = word
-//       .split('')
-//       .findIndex((letter) => '?!,.'.includes(letter))
-//     const firstPartOfWord = word.slice(0, punctuationMarkIndex)
-//     const lastPartOfWord = word.slice(punctuationMarkIndex)
-//     return `<span>${firstPartOfWord}</span>${lastPartOfWord}`
-//   })
-
-//   return processedWords.join(' ')
-// }
+  return newText
+}
+/*
+if (tags.includes(word)) {
+      console.log(word)
+      word = '1'
+      console.log(word)
+    }
+*/

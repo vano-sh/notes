@@ -3,20 +3,24 @@ import { ITag } from 'shared/model/types/ITag'
 
 export const Tag: React.FC<ITag> = ({ id, tag }) => {
   const { removeTag } = useTags()
-  const { findNote } = useNotes()
+  const { findNoteOn } = useNotes()
   const dispatch = useAppDispatch()
 
   const handleDelClick = (id: string) => {
     dispatch(removeTag(id))
   }
   const handleFindNoteClick = () => {
-    findNote(tag)
+    dispatch(findNoteOn(tag))
   }
 
   return (
-    <div className='tag'>
-      <button onClick={handleFindNoteClick}>{tag}</button>
-      <button onClick={() => handleDelClick(id)}>X</button>
+    <div className='tags__tag'>
+      <button className='tags__text' onClick={handleFindNoteClick}>
+        {tag}
+      </button>
+      <button className='tags__btn-del' onClick={() => handleDelClick(id)}>
+        X
+      </button>
     </div>
   )
 }

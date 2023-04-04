@@ -4,12 +4,14 @@
   display: flex;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
-  justify-content: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  border-bottom: 2px solid #fff;
+  padding-left: 50px;
+  border-bottom: 2px solid $fnt-color;
   height: 70px;
-  color: #fff;
-  background: #2a728a;
+  color: $fnt-color;
+  background: $bg-color;
+  font-weight: 700;
+  font-size: 32px;
 }

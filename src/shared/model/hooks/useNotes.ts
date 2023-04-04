@@ -4,20 +4,24 @@ import {
   changeNote,
   removeNote,
   showNote,
-  findNote,
-  fetchNotes,
+  findNoteOn,
+  findNoteOff,
 } from '../reducers/notesReducer'
 
 export const useNotes = () => {
-  const { notes } = useAppSelector((state) => state.noteReducer)
+  const { mode, notes, outputFound } = useAppSelector(
+    (state) => state.noteReducer
+  )
 
   return {
+    mode,
     notes,
+    outputFound,
     addNote,
     changeNote,
     removeNote,
     showNote,
-    findNote,
-    fetchNotes,
+    findNoteOn,
+    findNoteOff,
   }
 }

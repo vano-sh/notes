@@ -1,11 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   useAppDispatch,
   useNotes,
   useModalNote,
   useTags,
 } from 'shared/model/hooks'
-import { findTags } from 'shared/utils/lib'
+import { findTags, highlightingTags } from 'shared/utils/lib'
+import { v4 as uuidv4 } from 'uuid'
 
 export const ModalWindow: React.FC = () => {
   const { notes, addNote, changeNote } = useNotes()
@@ -19,40 +20,59 @@ export const ModalWindow: React.FC = () => {
 
   const dispatch = useAppDispatch()
 
-  const handleTitleAdd: React.ChangeEventHandler<HTMLInputElement> = (
+  const handleTitleAddChange: React.ChangeEventHandler<HTMLInputElement> = (
     event
   ) => {
     setTitle(event.target.value)
   }
-  const handleTextAdd: React.ChangeEventHandler<HTMLTextAreaElement> = (
+  const handleTextAddChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
     event
   ) => {
     setText(event.target.value)
   }
-  const handleAddNote = () => {
+
+  const handleAddNoteAndTagClick = () => {
     const tags = findTags(text)
 
-    tags.forEach((tag) => dispatch(addTag({ id: tag, tag })))
+    tags.forEach((tag) => dispatch(addTag({ id: uuidv4(), tag })))
 
-    dispatch(addNote({ id: new Date().toISOString(), title, text, tags }))
+    dispatch(
+      addNote({ id: uuidv4(), title, text: highlightingTags(text), tags })
+    )
     dispatch(toggleModal({ isActive: false, idNote: '', mode: '' }))
   }
   const handleCloseClick = () => {
     dispatch(toggleModal({ isActive: false, idNote: '', mode: '' }))
   }
   const handleChangeClick = () => {
-    if (idNote) dispatch(changeNote({ id: idNote, title, text }))
+    if (!idNote) return
+
+    const tags = findTags(text)
+
+    tags.forEach((tag) => dispatch(addTag({ id: uuidv4(), tag })))
+    dispatch(changeNote({ id: idNote, title, text, tags }))
     dispatch(toggleModal({ isActive: false, idNote: '', mode: '' }))
   }
+
+  const textRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (textRef && textRef.current && note) {
+      textRef.current.innerHTML = note.text
+    }
+  }, [mode, note])
 
   switch (mode) {
     case 'show': {
       if (!note) return null
       return (
         <>
-          <h2>{note.title}</h2>
-          <p>{note.text}</p>
-          <button onClick={handleCloseClick}>Close</button>
+          <h2 className='modal-note__title'>Show note</h2>
+          <h3 className='modal-note__title-note'>{note.title}</h3>
+          <p className='modal-note__text-note' ref={textRef}></p>
+          <button className='modal-note__btn-action' onClick={handleCloseClick}>
+            Close
+          </button>
         </>
       )
     }
@@ -60,18 +80,48 @@ export const ModalWindow: React.FC = () => {
       if (!note) return null
       return (
         <>
-          <input value={title} type='text' onChange={handleTitleAdd} />
-          <textarea value={text} onChange={handleTextAdd} />
-          <button onClick={handleChangeClick}>Save</button>
+          <h2 className='modal-note__title'>Change note</h2>
+          <input
+            className='modal-note__input-title'
+            value={title}
+            type='text'
+            onChange={handleTitleAddChange}
+          />
+          <textarea
+            className='modal-note__input-text'
+            value={text}
+            onChange={handleTextAddChange}
+          />
+          <button
+            className='modal-note__btn-action'
+            onClick={handleChangeClick}
+          >
+            Save
+          </button>
         </>
       )
     }
     default:
       return (
         <>
-          <input value={title} onChange={handleTitleAdd} type='text' />
-          <textarea value={text} onChange={handleTextAdd} />
-          <button onClick={handleAddNote}>Add Note</button>
+          <h2 className='modal-note__title'>Add note</h2>
+          <input
+            className='modal-note__input-title'
+            value={title}
+            onChange={handleTitleAddChange}
+            type='text'
+          />
+          <textarea
+            className='modal-note__input-text'
+            value={text}
+            onChange={handleTextAddChange}
+          />
+          <button
+            className='modal-note__btn-action'
+            onClick={handleAddNoteAndTagClick}
+          >
+            Add Note
+          </button>
         </>
       )
   }

@@ -1,15 +1,17 @@
 import { useAppDispatch, useModalNote } from 'shared/model/hooks'
 
 export const ModalBtn: React.FC = () => {
-  const { toggleModal } = useModalNote()
+  const { isActive, toggleModal } = useModalNote()
   const dispatch = useAppDispatch()
 
   const handleBtnClick = () => {
-    dispatch(toggleModal({ isActive: true, idNote: '', mode: '' }))
+    isActive
+      ? dispatch(toggleModal({ isActive: false, idNote: '', mode: '' }))
+      : dispatch(toggleModal({ isActive: true, idNote: '', mode: '' }))
   }
 
   return (
-    <div className='modal-note__btn' onClick={handleBtnClick}>
+    <div className='modal-note__btn-open' onClick={handleBtnClick}>
       +
     </div>
   )

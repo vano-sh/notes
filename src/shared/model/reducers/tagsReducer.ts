@@ -5,8 +5,11 @@ type ITags = {
   tags: ITag[]
 }
 
+const localStore = localStorage.getItem('tags')
+const tagsLocal = localStore ? JSON.parse(localStore) : []
+
 const initialState: ITags = {
-  tags: [],
+  tags: tagsLocal,
 }
 
 const tagsSlice = createSlice({
@@ -14,10 +17,14 @@ const tagsSlice = createSlice({
   initialState,
   reducers: {
     addTag: (state, { payload }: PayloadAction<ITag>) => {
-      state.tags.push({ id: payload.id, tag: payload.tag })
+      state.tags.push(payload)
+
+      localStorage.setItem('tags', JSON.stringify(state.tags))
     },
     removeTag: (state, { payload }: PayloadAction<string>) => {
       state.tags = state.tags.filter((tag) => tag.id !== payload)
+
+      localStorage.setItem('tags', JSON.stringify(state.tags))
     },
   },
 })
