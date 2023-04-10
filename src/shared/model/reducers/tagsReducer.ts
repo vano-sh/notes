@@ -17,7 +17,9 @@ const tagsSlice = createSlice({
   initialState,
   reducers: {
     addTag: (state, { payload }: PayloadAction<ITag>) => {
-      state.tags.push(payload)
+      if (!state.tags.some((tag) => tag.tag === payload.tag)) {
+        state.tags.push(payload)
+      }
 
       localStorage.setItem('tags', JSON.stringify(state.tags))
     },

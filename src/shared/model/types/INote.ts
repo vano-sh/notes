@@ -2,5 +2,5 @@ export interface INote {
   id: string
   title: string
   text: string
-  tags?: string[]
+  tags: string[]
 }

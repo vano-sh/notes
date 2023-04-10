@@ -1,5 +1,9 @@
 export const findTags = (text: string) => {
-  return text.split(' ').filter((word) => word.startsWith('#'))
+  const tags = text.split(' ').filter((word) => word.startsWith('#'))
+
+  const tagFiltered = tags.filter((tag, id) => tags.indexOf(tag) === id)
+
+  return tagFiltered
 }
 
 export const highlightingTags = (text: string | null) => {
